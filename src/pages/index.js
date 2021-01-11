@@ -3,16 +3,26 @@ import { graphql, Link } from "gatsby"
 import styled from "styled-components"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
+
+const Title = styled.h1`
+  display: inline-block;
+`
 
 const BlogLink = styled(Link)`
   text-decoration: none;
+  color: inherit;
 `
 
 const BlogTitle = styled.h3`
   margin-bottom: 20px;
-  color: blue;
+  &:hover {
+    color: #1dcaff;
+  }
+`
+
+const BlogBody = styled.div`
+  margin-bottom: 50px;
 `
 
 export default ({ data }) => {
@@ -21,17 +31,17 @@ export default ({ data }) => {
     <Layout>
       <SEO title="Home" />
       <div>
-        <h1>Neneta's Thoughts</h1>
-        <h4>{data.allMarkdownRemark.totalCount}</h4>
+        <Title>Neneta's Thoughts</Title>
+        <h4>{data.allMarkdownRemark.totalCount} Posts</h4>
         {data.allMarkdownRemark.edges.map(({ node }) => (
-          <div key={node.id}>
+          <BlogBody key={node.id}>
             <BlogLink to={node.fields.slug}>
               <BlogTitle>
                 {node.frontmatter.title} - {node.frontmatter.date}
               </BlogTitle>
-              <p>{node.excerpt}</p>
             </BlogLink>
-          </div>
+            <p>{node.frontmatter.description || node.excerpt}</p>
+          </BlogBody>
         ))}
       </div>
     </Layout>
